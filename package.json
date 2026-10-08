@@ -1,0 +1,22 @@
+{
+  "name": "scripts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "login": "node scripts/login.js",
+    "create:full-planning": "node scripts/full-planning-appellant.js",
+    "create:enforcement-listed-building": "node scripts/enforcement-listing-building-appellant.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^18.0.5",
+    "playwright": "^1.63.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
+  }
+}
