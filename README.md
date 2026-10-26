@@ -1,6 +1,6 @@
 # Appeal Automation Scripts
 
-Playwright scripts for signing in to the Planning Inspectorate test service and automating submission of a test appeal.
+Cypress scripts for creating test appeals.
 
 ## Requirements
 
@@ -23,15 +23,9 @@ Create a local environment file from the example:
 cp .env.example .env
 ```
 
-Edit `.env` and set these values:
+Edit `.env` and set values 
 
-| Variable                  | Description                                     |
-| ------------------------- | ----------------------------------------------- |
-| `APPEAL_URL`              | URL of the appeal service start page            |
-| `APPEAL_EMAIL`            | Email address used for verification             |
-| `EMAIL_VERIFICATION_CODE` | Current verification code for the email sign-in |
-
-Replace the example values with the test service URL, your email address, and the current verification code. Keep `.env` private; it is excluded from version control.
+Replace the example values with the test service URL, your email address, and the current verification code. Keep `.env` private. 
  
 Create and add your own PDF test documents to `test_data/` before running a submission script. The scripts expect these filenames:
 
@@ -52,5 +46,5 @@ Create and add your own PDF test documents to `test_data/` before running a subm
 3. Set the current `EMAIL_VERIFICATION_CODE` in `.env`, then run one of the submission scripts to create an appeal:
 
    ```sh
-   npm run create:full-planning
+   npm run full-planning:agent:hearing
    ```

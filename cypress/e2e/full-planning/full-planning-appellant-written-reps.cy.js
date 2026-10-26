@@ -1,0 +1,14 @@
+import { createRefNumber } from "../../support/utils";
+
+describe('Full planning appeal - appellant - written representations', () => {
+    it('creates and submits appeal', () => {
+        const refNumber = createRefNumber();
+
+        cy.restoreSession();
+
+        cy.startAppeal();
+        cy.prepareAppeal({ submittedBy: 'appellant', procedure: 'written-representations', refNumber });
+        cy.fullPlanningUploadDocuments();
+        cy.submitAppeal();
+    });
+});

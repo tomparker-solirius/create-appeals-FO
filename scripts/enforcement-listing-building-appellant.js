@@ -9,12 +9,13 @@ dotenv.config({ path: path.resolve(rootDir, '.env') });
 const appealUrl = process.env.APPEAL_URL;
 const emailAddress = process.env.APPEAL_EMAIL;
 const verificationCode = process.env.EMAIL_VERIFICATION_CODE;
+const runHeadless = process.env.HEADLESS_MODE === 'true';
 const authPath = path.resolve(rootDir, 'auth.json');
 
 (async () => {
   const startTime = performance.now();
   // Launch browser in headed mode to see execution (set headless: true to run silently)
-  const browser = await chromium.launch({ headless: false });
+  const browser = await chromium.launch({ headless: runHeadless });
   const context = await browser.newContext({ storageState: authPath });
   const page = await context.newPage();
 

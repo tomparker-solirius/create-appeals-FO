@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "login": "node scripts/login.js",
-    "create:full-planning": "node scripts/full-planning-appellant.js",
-    "create:enforcement-listed-building": "node scripts/enforcement-listing-building-appellant.js"
+    "full-planning:agent:hearing": "npx cypress run -b chrome -s 'cypress/e2e/full-planning/full-planning-agent-hearing.cy.js'",
+    "full-planning:agent:inquiry": "npx cypress run -b chrome -s 'cypress/e2e/full-planning/full-planning-agent-inquiry.cy.js'",
+    "full-planning:agent:written-reps": "npx cypress run -b chrome -s 'cypress/e2e/full-planning/full-planning-agent-written-reps.cy.js'",
+    "full-planning:appellant:hearing": "npx cypress run -b chrome -s 'cypress/e2e/full-planning/full-planning-appellant-hearing.cy.js'",
+    "full-planning:appellant:inquiry": "npx cypress run -b chrome -s 'cypress/e2e/full-planning/full-planning-appellant-inquiry.cy.js'",
+    "full-planning:appellant:written-reps": "npx cypress run -b chrome -s 'cypress/e2e/full-planning/full-planning-appellant-written-reps.cy.js'"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +21,9 @@
     "playwright": "^1.63.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.63.0"
+    "@faker-js/faker": "^10.6.0",
+    "@playwright/test": "^1.63.0",
+    "@testing-library/cypress": "^10.1.3",
+    "cypress": "^16.1.1"
   }
 }
