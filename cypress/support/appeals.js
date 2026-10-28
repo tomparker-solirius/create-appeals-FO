@@ -1,17 +1,26 @@
 const APPEAL_TYPES = {
     'full-planning': {
         aboutAppealLabel: 'Full planning',
+        applicationDatePath: '/before-you-start/application-date',
         grantedOrRefused: '/before-you-start/granted-or-refused',
         decisionDatePath: '/before-you-start/decision-date',
         emailBasePath: '/full-appeal/submit-appeal',
         basePath: '/appeals/full-planning'
     },
     'householder': {
-    aboutAppealLabel: 'Householder planning',
+        aboutAppealLabel: 'Householder planning',
+        applicationDatePath: '/before-you-start/application-date',
         grantedOrRefused: '/before-you-start/granted-or-refused-householder',
         decisionDatePath: '/before-you-start/decision-date-householder',
         emailBasePath: '/appeal-householder-decision',
         basePath: '/appeals/householder'
+    },
+    'listed-building-consent': {
+        aboutAppealLabel: 'Listed building consent',
+        grantedOrRefused: '/before-you-start/granted-or-refused',
+        decisionDatePath: '/before-you-start/decision-date',
+        emailBasePath: '/listed-building',
+        basePath: '/appeals/listed-building'
     }
 }
 
@@ -45,11 +54,13 @@ Cypress.Commands.add('startAppeal', (appealType) => {
     cy.clickContinue();
 
     // 4. Date application submitted
-    cy.onPage('/before-you-start/application-date', 'What date did you submit your application?');
-    cy.findByLabelText('Day').should('be.visible').clear().type('10');
-    cy.findByLabelText('Month').should('be.visible').clear().type('08');
-    cy.findByLabelText('Year').should('be.visible').clear().type('2026');
-    cy.clickContinue();
+    if(config.applicationDatePath){
+        cy.onPage(config.applicationDatePath, 'What date did you submit your application?');
+        cy.findByLabelText('Day').should('be.visible').clear().type('10');
+        cy.findByLabelText('Month').should('be.visible').clear().type('08');
+        cy.findByLabelText('Year').should('be.visible').clear().type('2026');
+        cy.clickContinue();
+    }
 
     // 5. Application status (Granted with conditions or Refused)
     cy.onPage(config.grantedOrRefused, 'Was your application granted or refused?');

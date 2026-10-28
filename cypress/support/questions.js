@@ -46,7 +46,7 @@ export function answerAboutYouAndSite(basePath, submittedBy) {
 
 export function answerSiteArea(basePath, area = '100') {
     cy.onPage(`${basePath}/prepare-appeal/site-area`, 'What is the area of the appeal site?');
-    if (basePath.includes('full-planning')) {
+    if (basePath.includes('full-planning') || basePath.includes('listed-building')) {
         cy.get('input[data-cy="answer-m²"]').check();
         cy.findAllByLabelText('Site area, in square metres').should('be.visible').clear().type(area);
     } else {
@@ -66,7 +66,6 @@ export function answerOwnAllLand(basePath) {
     cy.get('input[data-cy="answer-yes"]').check();
     cy.clickContinue();
 }
-export const answerOwnAllLAnd = answerOwnAllLand;
 
 export function answerAgriculturalHolding(basePath) {
     cy.onPage(`${basePath}/prepare-appeal/agricultural-holding`, 'Is the appeal site part of an agricultural holding?');
@@ -88,6 +87,14 @@ export function answerSiteVisit(basePath) {
 export function answerReferenceNumber(basePath, refNumber) {
     cy.onPage(`${basePath}/prepare-appeal/reference-number`, 'What is the application reference number?');
     cy.findByLabelText('What is the application reference number?').should('be.visible').clear().type(refNumber);
+    cy.clickContinue();
+}
+
+export function answerApplicationDate(basePath){
+    cy.onPage(`${basePath}/prepare-appeal/application-date`, "What date did you submit your application");
+    cy.findByLabelText('Day').should('be.visible').clear().type('10');
+    cy.findByLabelText('Month').should('be.visible').clear().type('08');
+    cy.findByLabelText('Year').should('be.visible').clear().type('2026');
     cy.clickContinue();
 }
 

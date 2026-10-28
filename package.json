@@ -12,7 +12,13 @@
     "full-planning:appellant:inquiry": "npx cypress run -b chrome -s 'cypress/e2e/full-planning/full-planning-appellant-inquiry.cy.js'",
     "full-planning:appellant:written-reps": "npx cypress run -b chrome -s 'cypress/e2e/full-planning/full-planning-appellant-written-reps.cy.js'",
     "householder:agent:written-reps": "npx cypress run -b chrome -s 'cypress/e2e/householder/householder-agent-written-reps.cy.js'",
-    "householder:appellant:written-reps": "npx cypress run -b chrome -s 'cypress/e2e/householder/householder-appellant-written-reps.cy.js'"
+    "householder:appellant:written-reps": "npx cypress run -b chrome -s 'cypress/e2e/householder/householder-appellant-written-reps.cy.js'",
+    "listed-building-consent:agent:hearing": "npx cypress run -b chrome -s 'cypress/e2e/listed-building-consent/listed-building-consent-agent-hearing.cy.js'",
+    "listed-building-consent:agent:inquiry": "npx cypress run -b chrome -s 'cypress/e2e/listed-building-consent/listed-building-consent-agent-inquiry.cy.js'",
+    "listed-building-consent:agent:written-reps": "npx cypress run -b chrome -s 'cypress/e2e/listed-building-consent/listed-building-consent-agent-written-reps.cy.js'",
+    "listed-building-consent:appellant:hearing": "npx cypress run -b chrome -s 'cypress/e2e/listed-building-consent/listed-building-consent-appellant-hearing.cy.js'",
+    "listed-building-consent:appellant:inquiry": "npx cypress run -b chrome -s 'cypress/e2e/listed-building-consent/listed-building-consent-appellant-inquiry.cy.js'",
+    "listed-building-consent:appellant:written-reps": "npx cypress run -b chrome -s 'cypress/e2e/listed-building-consent/listed-building-consent-appellant-written-reps.cy.js'"
   },
   "keywords": [],
   "author": "",

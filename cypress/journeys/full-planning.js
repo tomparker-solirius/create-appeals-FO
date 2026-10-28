@@ -42,10 +42,6 @@ Cypress.Commands.add('fullPlanningPrepareAppeal', ({ submittedBy, procedure, ref
     answerOtherAppeals(BASE_PATH);
 });
 
-Cypress.Commands.add('prepareAppeal', (args) => {
-    cy.fullPlanningPrepareAppeal(args);
-});
-
 Cypress.Commands.add('fullPlanningUploadDocuments', () => {
     cy.openTask(BASE_PATH, 'Upload');
     uploadApplicationForm(BASE_PATH);
