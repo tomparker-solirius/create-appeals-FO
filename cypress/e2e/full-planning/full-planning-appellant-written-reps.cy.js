@@ -6,9 +6,9 @@ describe('Full planning appeal - appellant - written representations', () => {
 
         cy.restoreSession();
 
-        cy.startAppeal();
-        cy.prepareAppeal({ submittedBy: 'appellant', procedure: 'written-representations', refNumber });
+        cy.startAppeal('full-planning');
+        cy.fullPlanningPrepareAppeal({ submittedBy: 'appellant', procedure: 'written-representations', refNumber });
         cy.fullPlanningUploadDocuments();
-        cy.submitAppeal();
+        cy.submitAppeal('full-planning');
     });
 });

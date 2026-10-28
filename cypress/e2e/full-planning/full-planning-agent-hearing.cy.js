@@ -6,9 +6,9 @@ describe('Full planning appeal - agent - hearing', () => {
 
         cy.restoreSession();
 
-        cy.startAppeal();
-        cy.prepareAppeal({ submittedBy: 'agent', procedure: 'hearing', refNumber });
+        cy.startAppeal('full-planning');
+        cy.fullPlanningPrepareAppeal({ submittedBy: 'agent', procedure: 'hearing', refNumber });
         cy.fullPlanningUploadDocuments();
-        cy.submitAppeal();
+        cy.submitAppeal('full-planning');
     });
 });

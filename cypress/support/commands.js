@@ -35,3 +35,12 @@ Cypress.Commands.add('onPage', (pathname, heading) => {
     cy.location('pathname').should('eq', pathname);
     cy.contains('h1', heading).should('be.visible');
 });
+
+Cypress.Commands.add('clickContinue', () => {
+    cy.findByRole('button', { name: 'Continue' }).should('be.visible').click();
+});
+
+Cypress.Commands.add('openTask', (basePath, linkText) => {
+    cy.onPage(`${basePath}/appeal-form/your-appeal`, 'Your appeal');
+    cy.contains('a', linkText).click();
+});

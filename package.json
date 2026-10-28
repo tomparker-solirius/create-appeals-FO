@@ -10,7 +10,9 @@
     "full-planning:agent:written-reps": "npx cypress run -b chrome -s 'cypress/e2e/full-planning/full-planning-agent-written-reps.cy.js'",
     "full-planning:appellant:hearing": "npx cypress run -b chrome -s 'cypress/e2e/full-planning/full-planning-appellant-hearing.cy.js'",
     "full-planning:appellant:inquiry": "npx cypress run -b chrome -s 'cypress/e2e/full-planning/full-planning-appellant-inquiry.cy.js'",
-    "full-planning:appellant:written-reps": "npx cypress run -b chrome -s 'cypress/e2e/full-planning/full-planning-appellant-written-reps.cy.js'"
+    "full-planning:appellant:written-reps": "npx cypress run -b chrome -s 'cypress/e2e/full-planning/full-planning-appellant-written-reps.cy.js'",
+    "householder:agent:written-reps": "npx cypress run -b chrome -s 'cypress/e2e/householder/householder-agent-written-reps.cy.js'",
+    "householder:appellant:written-reps": "npx cypress run -b chrome -s 'cypress/e2e/householder/householder-appellant-written-reps.cy.js'"
   },
   "keywords": [],
   "author": "",
