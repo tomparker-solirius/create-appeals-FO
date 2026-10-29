@@ -21,6 +21,12 @@ const APPEAL_TYPES = {
         decisionDatePath: '/before-you-start/decision-date',
         emailBasePath: '/listed-building',
         basePath: '/appeals/listed-building'
+    },
+    'enforcement-notice': {
+        aboutAppealLabel: 'Enforcement notice',
+        isEnforcement: true,
+        emailBasePath: '/enforcement',
+        basePath: '/appeals/enforcement'
     }
 }
 
@@ -28,7 +34,7 @@ function getAppealType(appealType){
     return APPEAL_TYPES[appealType]; 
 }
 
-Cypress.Commands.add('startAppeal', (appealType) => {
+Cypress.Commands.add('startAppeal', (appealType, refNumber) => {
     const config = getAppealType(appealType)
 
     cy.env(['APPEAL_URL', 'LPA_NAME']).then(({ APPEAL_URL, LPA_NAME }) => {
@@ -53,6 +59,21 @@ Cypress.Commands.add('startAppeal', (appealType) => {
     cy.findByLabelText(config.aboutAppealLabel).check();
     cy.clickContinue();
 
+    if(config.isEnforcement){
+
+        cy.onPage('/before-you-start/enforcement-issue-date', 'What is the issue date on your enforcement notice?');
+        cy.findByLabelText('Day').should('be.visible').clear().type('10');
+        cy.findByLabelText('Month').should('be.visible').clear().type('09');
+        cy.findByLabelText('Year').should('be.visible').clear().type('2026');
+        cy.clickContinue();
+
+        cy.onPage('/before-you-start/enforcement-effective-date', 'What is the effective date on your enforcement notice?');
+        cy.findByLabelText('Day').should('be.visible').clear().type('3');
+        cy.findByLabelText('Month').should('be.visible').clear().type('12');
+        cy.findByLabelText('Year').should('be.visible').clear().type('2027');
+        cy.clickContinue();
+    }
+    else{
     // 4. Date application submitted
     if(config.applicationDatePath){
         cy.onPage(config.applicationDatePath, 'What date did you submit your application?');
@@ -60,7 +81,7 @@ Cypress.Commands.add('startAppeal', (appealType) => {
         cy.findByLabelText('Month').should('be.visible').clear().type('08');
         cy.findByLabelText('Year').should('be.visible').clear().type('2026');
         cy.clickContinue();
-    }
+     }
 
     // 5. Application status (Granted with conditions or Refused)
     cy.onPage(config.grantedOrRefused, 'Was your application granted or refused?');
@@ -73,10 +94,17 @@ Cypress.Commands.add('startAppeal', (appealType) => {
     cy.findByLabelText('Month').should('be.visible').clear().type('09');
     cy.findByLabelText('Year').should('be.visible').clear().type('2026');
     cy.clickContinue();
+    }
 
     // 7. Eligibility check page
     cy.onPage('/before-you-start/can-use-service', 'You can appeal using this service');
     cy.findByRole('button', { name: 'Start appeal' }).click();
+
+    if(config.isEnforcement){
+        cy.onPage(`${config.emailBasePath}/enforcement-reference-number`, 'What is the reference number on the enforcement notice?');
+        cy.findByLabelText('What is the reference number on the enforcement notice?').should('be.visible').clear().type(refNumber);
+        cy.clickContinue();
+    }
 
     // 8. Email address and verification
     cy.env(['APPEAL_EMAIL', 'EMAIL_VERIFICATION_CODE']).then(({ APPEAL_EMAIL, EMAIL_VERIFICATION_CODE }) => {
@@ -107,7 +135,7 @@ Cypress.Commands.add('submitAppeal', (appealType) => {
     cy.onPage(`${config.basePath}/appeal-form/your-appeal`, 'Your appeal');
     cy.findAllByRole('link', { name: 'Continue'}).first().click();
     cy.get('button[data-cy="submit-appeal"]').click();
-    cy.contains('h1', 'Appeal submitted').should('be.visible');
+    cy.contains('h1', 'Appeal submitted').should('be.visible', { timeout: 10000 });
     cy.contains('a', 'View your appeals').click();
     cy.contains('h1', 'Your appeals').should('be.visible');
     cy.get('#tab_waiting-for-review').click();

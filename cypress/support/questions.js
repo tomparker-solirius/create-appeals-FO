@@ -21,6 +21,13 @@ export function answerAboutYouAndSite(basePath, submittedBy) {
         cy.clickContinue();
     }
 
+    answerContactDetails(basePath, submittedBy);
+    answerPhoneNumber(basePath);
+    answerSiteAddress(basePath)
+}
+
+export function answerContactDetails(basePath, submittedBy){
+    const prepare = `${basePath}/prepare-appeal`;
     // Contact details (agent's own details on the agent journey)
     cy.onPage(`${prepare}/contact-details`, 'Contact details');
     cy.findByLabelText('First name').should('be.visible').clear().type('John');
@@ -29,12 +36,18 @@ export function answerAboutYouAndSite(basePath, submittedBy) {
         cy.findByLabelText('Organisation name (optional)').should('be.visible').clear().type('Test Company Ltd');
     }
     cy.clickContinue();
+}
 
+export function answerPhoneNumber(basePath){
+    const prepare = `${basePath}/prepare-appeal`;
     // Phone number
     cy.onPage(`${prepare}/phone-number`, 'What is your phone number?');
     cy.findByLabelText('UK telephone number').should('be.visible').clear().type('+447933454333');
     cy.clickContinue();
+}
 
+export function answerSiteAddress(basePath){
+    const prepare = `${basePath}/prepare-appeal`;
     // Address
     cy.onPage(`${prepare}/appeal-site-address`, 'What is the address of the appeal site?');
     cy.findByLabelText('Address line 1').should('be.visible').clear().type('30 Shire Lane');
@@ -43,6 +56,7 @@ export function answerAboutYouAndSite(basePath, submittedBy) {
     cy.findByLabelText('Postcode').should('be.visible').clear().type('CF10 1AA');
     cy.clickContinue();
 }
+
 
 export function answerSiteArea(basePath, area = '100') {
     cy.onPage(`${basePath}/prepare-appeal/site-area`, 'What is the area of the appeal site?');
@@ -74,7 +88,7 @@ export function answerAgriculturalHolding(basePath) {
 }
 
 export function answerSiteVisit(basePath) {
-    cy.onPage(`${basePath}/prepare-appeal/inspector-need-access`, 'Will an inspector need to access your land or property?');
+    cy.onPage(`${basePath}/prepare-appeal/inspector-need-access`, 'Will an inspector need to access');
     cy.get('input[data-cy="answer-no"]').check();
     cy.clickContinue();
 
@@ -167,6 +181,136 @@ export function answerDecideAppeal(basePath, procedure) {
 export function answerOtherAppeals(basePath) {
     // Linked appeals
     cy.onPage(`${basePath}/prepare-appeal/other-appeals`, 'Are there other appeals linked to your development?');
+    cy.findByLabelText('No').check();
+    cy.clickContinue();
+}
+
+export const enforcementLinkedAppealAppellants = [
+    {firstName: 'Bilbo', lastName: 'Baggins'},
+    {firstName: 'Frodo', lastName: 'Baggins'},
+    {firstName: 'Samwise', lastName: 'Gamgee'}
+];
+export const enforcementLinkedAppealsOrgName = 'Shire Holdings Ltd';
+
+export function answerWhoIsAppealing(basePath, appellantType, submittedBy){
+    const prepare = `${basePath}/prepare-appeal`;
+    const [appellant] = enforcementLinkedAppealAppellants;
+    const appellantName = `${appellant.firstName} ${appellant.lastName}`;
+
+    cy.onPage(`${prepare}/who-is-appealing`, 'Who is appealing against the enforcement notice?');
+
+    if(appellantType === 'individual'){
+        cy.findByLabelText('An Individual').check();
+        cy.clickContinue();
+
+        cy.onPage(`${prepare}/individual-name`, 'What is the name of the individual appealing against the enforcement notice?');
+        cy.findByLabelText('First name').should('be.visible').clear().type(appellant.firstName);
+        cy.findByLabelText('Last name').should('be.visible').clear().type(appellant.lastName);
+        cy.clickContinue();
+
+        cy.onPage(`${prepare}/are-you-individual`, `Are you ${appellantName}?`);
+        cy.get(`input[data-cy="answer-${submittedBy === 'appellant' ? 'yes' : 'no'}"]`).check();
+        cy.clickContinue();
+    }else if(appellantType === 'additional-appellants'){
+        cy.findByLabelText('Additional appellants').check();
+        cy.clickContinue();
+
+        enforcementLinkedAppealAppellants.forEach(({firstName, lastName}, index) => {
+            if(index > 0){
+                cy.onPage(`${prepare}/add-another-individual`, 'Do you need to add another individual?');
+                cy.get('input[data-cy="answer-yes"]').check();
+                cy.clickContinue();
+            }
+            cy.onPage(`${prepare}/add-another-individual`, 'What is the name of the individual appealing against the enforcement notice?');
+            cy.findByLabelText('First name').should('be.visible').clear().type(firstName);
+            cy.findByLabelText('Last name').should('be.visible').clear().type(lastName);
+            cy.clickContinue();
+        })
+
+        cy.onPage(`${prepare}/add-another-individual`, 'Do you need to add another individual?');
+        cy.get('input[data-cy="answer-no"]').check();
+        cy.clickContinue();
+
+        cy.onPage(`${prepare}/select-name`, 'Select your name');
+        if(submittedBy === 'appellant'){
+            cy.findByLabelText(appellantName).check();
+        } else {
+            cy.findByLabelText('I am appealing on behalf of the additional appellants').check();
+        }
+        cy.clickContinue();
+    } else if(appellantType === 'organisation') {
+        cy.findByLabelText('An organisation').check();
+        cy.clickContinue();
+
+        cy.onPage(`${prepare}/organisation-name`, 'What is the name of the organisation?');
+        cy.findAllByLabelText('What is the name of the organisation?').should('be.visible').clear().type(enforcementLinkedAppealsOrgName);
+        cy.clickContinue();
+    }
+
+    if(submittedBy === 'agent') answerContactDetails(basePath, submittedBy);
+    answerPhoneNumber(basePath);
+
+    if(!(appellantType === 'individual' && submittedBy === 'appellant')){
+        cy.onPage(`${prepare}/complete-appeal`, 'Complete the appeal on behalf of');
+        cy.clickContinue();
+    }
+}
+
+export function answerIsContactAddress(basePath){
+    cy.onPage(`${basePath}/prepare-appeal/is-contact-address`, 'Is the appeal site address your contact address?');
+    cy.get('input[data-cy="answer-yes"]').check();
+    cy.clickContinue();
+}
+
+export function answerLandInterest(basePath, appellantType){
+    const count = appellantType === 'additional-appellants' ? enforcementLinkedAppealAppellants.length : 1;
+
+    let previousPathname = '';
+    for(let i = 0; i < count; i++){
+        cy.location('pathname').should((pathname) => {
+            expect(pathname).to.match(new RegExp(`^${basePath}/prepare-appeal/land-interest`));
+            if (previousPathname) {
+                expect(pathname).to.not.equal(previousPathname);
+            }
+        }).then((pathname) => {
+            previousPathname = pathname;
+        });
+        cy.contains('h1', 'interest in the land?').should('be.visible');
+        cy.findAllByLabelText('Owner').check();
+        cy.clickContinue();
+    }
+}
+
+export function answerAllegedBreach(basePath){
+    cy.onPage(`${basePath}/prepare-appeal/description-alleged-breach`, 'Enter the description of the alleged breach');
+    cy.findByRole('textbox').should('be.visible').clear().type(descriptionText);
+    cy.clickContinue();
+}
+
+export function answerGroundsOfAppeal(basePath){
+    const prepare = `${basePath}/prepare-appeal`
+
+    cy.onPage(`${prepare}/choose-grounds`, 'Choose your grounds of appeal');
+    cy.findByLabelText('Ground (a)').check();
+    cy.clickContinue();
+
+    cy.onPage(`${prepare}/submit-planning-application`, 'Did anyone submit a retrospective planning application?');
+    cy.get('input[data-cy="answer-no"]').check();
+    cy.clickContinue();
+
+    cy.onPage(`${prepare}/pay-ground-a`, 'Did you pay the ground (a) fee?');
+    cy.get('input[data-cy="answer-yes"]').check();
+    cy.clickContinue();
+
+    cy.onPage(`${prepare}/upload-ground-a-receipt`, 'Upload your ground (a) fee receipt');
+    cy.get('input[type="file"]').selectFile('./test_data/test_doc_3.pdf', { force: true });
+    cy.clickContinue();
+
+    cy.onPage(`${prepare}/facts-ground-a`, 'Facts for ground (a)');
+    cy.findByRole('textbox').should('be.visible').clear().type(descriptionText);
+    cy.clickContinue();
+
+    cy.onPage(`${prepare}/facts-ground-a-supporting-documents`, 'Do you have any documents to support your ground (a) facts?');
     cy.findByLabelText('No').check();
     cy.clickContinue();
 }

@@ -85,5 +85,16 @@ export function answerOtherNewDocuments(basePath){
     cy.clickContinue();
 }
 
+export function uploadEnforcementNotice(basePath) {
+    cy.onPage(`${basePath}/upload-documents/upload-enforcement-notice`, 'Upload your enforcement notice');
+    cy.get('input[type="file"]').selectFile('./test_data/test_doc_3.pdf', { force: true });
+    cy.clickContinue();
+}
+
+export function uploadEnforcementNoticePlan(basePath) {
+    cy.onPage(`${basePath}/upload-documents/upload-enforcement-plan`, 'Upload your enforcement notice plan');
+    cy.get('input[type="file"]').selectFile('./test_data/test_doc_3.pdf', { force: true });
+    cy.clickContinue();
+}
 
 

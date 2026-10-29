@@ -17,7 +17,7 @@ import {
     answerDesignAccessStatement,
     answerNewPlansDrawings,
     answerOtherNewDocuments,
-    answerSeparateOwnershipCertificate,
+    uploadSeparateOwnershipCertificate,
     answerSubmitPlanningObligation,
     uploadAppealStatement,
     uploadApplicationForm,
@@ -51,7 +51,7 @@ Cypress.Commands.add('listedBuildingConsentUploadDocuments', ({procedure}) => {
     uploadDescriptionEvidence(BASE_PATH);
     uploadDecisionLetter(BASE_PATH);
     answerSubmitPlanningObligation(BASE_PATH)
-    answerSeparateOwnershipCertificate(BASE_PATH)
+    uploadSeparateOwnershipCertificate(BASE_PATH)
     uploadAppealStatement(BASE_PATH)
     if(procedure !== 'written-representations') uploadDraftStatementOfCommonGround(BASE_PATH)
     answerAppealCosts(BASE_PATH);
