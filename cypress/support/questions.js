@@ -200,7 +200,7 @@ export function answerWhoIsAppealing(basePath, appellantType, submittedBy){
     cy.onPage(`${prepare}/who-is-appealing`, 'Who is appealing against the enforcement notice?');
 
     if(appellantType === 'individual'){
-        cy.findByLabelText('An Individual').check();
+        cy.findByLabelText('An individual').check();
         cy.clickContinue();
 
         cy.onPage(`${prepare}/individual-name`, 'What is the name of the individual appealing against the enforcement notice?');
